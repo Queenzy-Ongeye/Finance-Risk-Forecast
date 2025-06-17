@@ -4,6 +4,7 @@ from statsmodels.tsa.stattools import acf
 from statsmodels.stats.diagnostic import acorr_ljungbox
 from arch import arch_model
 import pandas as pd
+import numpy as np
 
 
 def analyze_residuals(results,name):
@@ -41,6 +42,5 @@ def analyze_residuals(results,name):
     lb_test = acorr_ljungbox(std_residuals ** 2, lags = 10, return_df=True)
     print(f"\n{name} - Ljung-Box Test (p-values  < 0.05 indicate remaining autocorrelation.)")
     print(lb_test['lb_pvalue'].head())
-           
     
     
