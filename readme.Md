@@ -1,144 +1,158 @@
-# 📉 Finance Risk Forecasting
-A time series modeling project that forecasts financial risk using historical asset prices. This project analyzes log returns, estimates volatility with GARCH models, and computes Value at Risk (VaR) using multiple techniques. The results are visualized through an interactive Streamlit dashboard.
+# Stock Price GARCH Analysis
 
----
+A comprehensive financial analysis tool that implements GARCH (Generalized Autoregressive Conditional Heteroskedasticity) models to analyze and forecast stock price volatility patterns.
 
-## 🌟 Project Objective
+## 📊 Overview
 
-To build a robust system that:
+This project provides advanced volatility modeling for financial time series data using GARCH models. It helps investors, analysts, and researchers understand volatility clustering, forecast future volatility, and assess financial risk in stock markets.
 
-* Retrieves asset price data (stocks, crypto, indices) via Yahoo Finance
-* Cleans and preprocesses time series data
-* Computes log returns and volatility
-* Forecasts risk metrics such as Value at Risk (VaR)
-* Visualizes results interactively using Streamlit
+## ✨ Features
 
----
+- **Stock Data Retrieval**: Automated fetching of historical stock prices using Yahoo Finance API
+- **GARCH Modeling**: Implementation of various GARCH model variants (GARCH, EGARCH, GJR-GARCH)
+- **Volatility Forecasting**: Predict future volatility patterns based on historical data
+- **Interactive Visualizations**: Dynamic charts showing price movements, returns, and volatility
+- **Statistical Analysis**: Comprehensive statistical tests and model diagnostics
+- **Risk Metrics**: Calculate Value at Risk (VaR) and other risk measures
+- **Streamlit Dashboard**: User-friendly web interface for analysis
 
-## 🏠 Project Structure
+## 🛠️ Technologies Used
 
-```
-finance_risk_forecast/
-├── data/                  # Contains downloaded raw and processed CSVs
-├── notebooks/             # Jupyter notebooks for exploration and modeling
-│   ├── 01_price_fetching.ipynb
-│   ├── 02_volatility_analysis.ipynb
-│   └── 03_var_modeling.ipynb
-├── src/                   # Core Python codebase
-│   ├── data/              # Data fetching logic
-│   ├── utils/             # Preprocessing, helpers
-│   ├── risk_models/       # GARCH and VaR model code
-│   └── visualization/     # Plotting functions
-├── streamlit/             # Streamlit dashboard and components
-│   ├── app.py             # Main Streamlit app
-│   └── pages/             # Subpages for visualizations
-├── tests/                 # Unit tests for components
-├── requirements.txt       # Python dependencies
-├── README.md              # Project overview
-└── setup.py               # Optional: pip installable package
-```
+- **Python 3.9+**
+- **Streamlit** - Web application framework
+- **pandas** - Data manipulation and analysis
+- **numpy** - Numerical computing
+- **matplotlib/seaborn** - Data visualization
+- **plotly** - Interactive charts
+- **yfinance** - Stock data retrieval
+- **arch** - GARCH modeling library
+- **scipy/statsmodels** - Statistical analysis
 
----
+## 📦 Installation
 
-## 🧐 Key Features
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Queenzy-Ongeye/Stock-Price-GARCH-Analysis.git
+   cd Stock-Price-GARCH-Analysis
+   ```
 
-* 📦 Fetch asset prices using `yfinance`
-* 🧹 Preprocess and compute log returns
-* 🔥 Forecast volatility with GARCH
-* 📉 Calculate VaR (Historical, Parametric, Monte Carlo)
-* 📊 Visualize prices, returns, and risk metrics
-* 🌐 Deploy results via a Streamlit app
+2. **Create a virtual environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
----
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## 🚀 Getting Started
+## 🚀 Usage
 
-### 🔧 1. Clone the repo
-
+### Running the Streamlit App
 ```bash
-git clone https://github.com/yourusername/finance-risk-forecast.git
-cd finance-risk-forecast
+streamlit run app.py
 ```
 
-### 🐍 2. Set up virtual environment
+### Basic Python Usage
+```python
+import pandas as pd
+from arch import arch_model
+import yfinance as yf
 
-```bash
-python -m venv venv
-source venv/bin/activate   # On Windows: venv\Scripts\activate
+# Fetch stock data
+ticker = "AAPL"
+data = yf.download(ticker, start="2020-01-01", end="2024-01-01")
+
+# Calculate returns
+returns = 100 * data['Adj Close'].pct_change().dropna()
+
+# Fit GARCH model
+model = arch_model(returns, vol='Garch', p=1, q=1)
+fitted_model = model.fit()
+
+# Forecast volatility
+forecast = fitted_model.forecast(horizon=30)
 ```
 
-### 📦 3. Install dependencies
+## 📈 Key Features Explained
 
-```bash
-pip install -r requirements.txt
-```
+### GARCH Models
+- **GARCH(1,1)**: Basic model capturing volatility clustering
+- **EGARCH**: Exponential GARCH for asymmetric volatility effects
+- **GJR-GARCH**: Handles leverage effects in volatility
 
-### 💻 4. Run Streamlit app
+### Analysis Components
+1. **Data Preprocessing**: Handles missing values, outliers, and data cleaning
+2. **Exploratory Analysis**: Statistical summaries and preliminary visualizations
+3. **Model Fitting**: Automated parameter estimation and model selection
+4. **Diagnostics**: Residual analysis and goodness-of-fit tests
+5. **Forecasting**: Multi-step ahead volatility predictions
+6. **Risk Assessment**: VaR calculations and stress testing
 
-```bash
-streamlit run streamlit/app.py
-```
+## 📊 Output Examples
 
----
+The application provides:
+- **Time Series Plots**: Stock prices and returns over time
+- **Volatility Charts**: Historical and forecasted volatility
+- **Statistical Summaries**: Model parameters and fit statistics
+- **Risk Metrics**: VaR estimates and confidence intervals
+- **Model Comparisons**: Performance metrics across different GARCH variants
 
-## 📓 Notebooks Overview
+## 🔧 Configuration
 
-| Notebook                       | Purpose                         |
-| ------------------------------ | ------------------------------- |
-| `01_price_fetching.ipynb`      | Download & visualize price data |
-| `02_volatility_analysis.ipynb` | Compute returns and GARCH vol   |
-| `03_var_modeling.ipynb`        | Calculate Value at Risk         |
+Customize your analysis by modifying parameters in the configuration section:
 
----
+- **Time Period**: Adjust start and end dates for analysis
+- **GARCH Parameters**: Modify p, q values for different model orders
+- **Forecast Horizon**: Set the number of periods to forecast
+- **Risk Levels**: Configure VaR confidence levels
 
-## 📁 Sample Output
+## 📝 Model Interpretation
 
-* ✅ AAPL, BTC-USD, GSPC price trends
-* ✅ Daily log returns and rolling volatility
-* ✅ Historical & Parametric VaR for 95%, 99% confidence levels
-* ✅ GARCH volatility forecast curve
+### GARCH Parameters
+- **α (alpha)**: Impact of recent shocks on volatility
+- **β (beta)**: Persistence of volatility
+- **ω (omega)**: Long-term average variance
 
----
-
-## 📊 Streamlit Dashboard
-
-Features:
-
-* Asset selector dropdown
-* Price & return charts
-* VaR plots with dynamic confidence levels
-* GARCH volatility forecasts
-* Downloadable CSV of forecasts
-
----
-
-## 🧲 Testing
-
-```bash
-pytest tests/
-```
-
----
-
-## 🔮 Future Work
-
-* Portfolio VaR (multi-asset weights)
-* Conditional Expected Shortfall (CVaR)
-* Copula modeling for joint risk
-* Live data streaming and re-forecasting
-
----
+### Key Metrics
+- **AIC/BIC**: Model selection criteria
+- **Log-Likelihood**: Model fit quality
+- **Ljung-Box Test**: Residual autocorrelation test
 
 ## 🤝 Contributing
 
-Feel free to fork this repo and submit pull requests. Ideas, improvements, or bug fixes are welcome!
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **ARCH Library**: For providing robust GARCH implementation
+- **Yahoo Finance**: For free access to financial data
+- **Streamlit Team**: For the excellent web app framework
+- **Financial Econometrics Community**: For theoretical foundations
+
+## 📞 Contact
+
+- **GitHub**: [Queenzy-Ongeye](https://github.com/Queenzy-Ongeye)
+- **Email**: queenzyongeye@gmail.com
+- **LinkedIn**: [Your LinkedIn Profile](https://linkedin.com/in/yourprofile)
+
+## 🔗 Useful Resources
+
+- [GARCH Models Documentation](https://arch.readthedocs.io/)
+- [Financial Time Series Analysis](https://www.investopedia.com/articles/trading/07/statarb.asp)
+- [Volatility Modeling Best Practices](https://quantpedia.com/volatility-modeling/)
 
 ---
 
-## 📜 License
-
-MIT License
-
-## 👨‍💻 Author
-
-Quienzy Ong'eye — [@quienzy-ong'eye](https://www.linkedin.com/in/quienzy-ong-eye-a66491210/)
+⭐ **Star this repository if you found it helpful!**
